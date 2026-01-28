@@ -1,14 +1,91 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>com.gestorpedidos</groupId>
   <artifactId>ordermanagement</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>ordermanagement</name>
-  <description>pedidos</description>
+
   <modules>
-  	<module>common</module>
-  	<module>core</module>
-  	<module>application</module>
+    <module>common</module>
+    <module>core</module>
+    <module>application</module>
   </modules>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>17</maven.compiler.source> <maven.compiler.target>17</maven.compiler.target>
+  </properties>
+
+  <dependencyManagement>
+      <dependencies>
+          <dependency>
+              <groupId>com.gestorpedidos</groupId>
+              <artifactId>common-api</artifactId>
+              <version>${project.version}</version>
+          </dependency>
+          <dependency>
+              <groupId>com.gestorpedidos</groupId>
+              <artifactId>common-utils</artifactId>
+              <version>${project.version}</version>
+          </dependency>
+          <dependency>
+              <groupId>com.gestorpedidos</groupId>
+              <artifactId>order-domain</artifactId>
+              <version>${project.version}</version>
+          </dependency>
+          <dependency>
+              <groupId>com.gestorpedidos</groupId>
+              <artifactId>order-service</artifactId>
+              <version>${project.version}</version>
+          </dependency>
+      </dependencies>
+  </dependencyManagement>
+
+  <profiles>
+    <profile>
+      <id>dev</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <env.name>DESARROLLO</env.name>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.11.0</version>
+            <configuration>
+              <showWarnings>true</showWarnings>
+              <showDeprecation>true</showDeprecation>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>prod</id>
+      <properties>
+        <env.name>PRODUCCION</env.name>
+      </properties>
+      <build>
+        <finalName>${project.artifactId}-PROD</finalName>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.11.0</version>
+            <configuration>
+              <showWarnings>false</showWarnings>
+              <failOnWarning>false</failOnWarning>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
